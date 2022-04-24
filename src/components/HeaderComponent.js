@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label } from 'reactstrap';
+import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron,
+    Button, Modal, ModalHeader, ModalBody,
+    Form, FormGroup, Input, Label } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
-import { focusableElements } from 'reactstrap/lib/utils';
 
 class Header extends Component {
 
@@ -12,6 +13,7 @@ class Header extends Component {
             isNavOpen: false,
             isModalOpen: false
         };
+
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
@@ -28,6 +30,7 @@ class Header extends Component {
             isModalOpen: !this.state.isModalOpen
         });
     }
+
     handleLogin(event) {
         alert(`Username: ${this.username.value} Password: ${this.password.value} Remember: ${this.remember.checked}`);
         this.toggleModal();
@@ -109,6 +112,7 @@ class Header extends Component {
                         </Form>
                     </ModalBody>
                 </Modal>
+
             </React.Fragment>
         );
     }

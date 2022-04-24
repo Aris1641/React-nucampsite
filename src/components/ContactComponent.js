@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import {
-    Breadcrumb, BreadcrumbItem,
-    Button, Label, Col, Row
-} from 'reactstrap';
+import { Breadcrumb, BreadcrumbItem,
+    Button, Label, Col, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
@@ -85,7 +83,7 @@ class Contact extends Component {
                                         placeholder="First Name"
                                         className="form-control"
                                         validators={{
-                                            required,
+                                            required, 
                                             minLength: minLength(2),
                                             maxLength: maxLength(15)
                                         }}
@@ -179,7 +177,7 @@ class Contact extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Col md={{ size: 4, offset: 2 }}>
+                                <Col md={{size: 4, offset: 2}}>
                                     <div className="form-check">
                                         <Label check>
                                             <Control.checkbox
@@ -209,7 +207,7 @@ class Contact extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Col md={{ size: 10, offset: 2 }}>
+                                <Col md={{size: 10, offset: 2}}>
                                     <Button type="submit" color="primary">
                                         Send Feedback
                                     </Button>
