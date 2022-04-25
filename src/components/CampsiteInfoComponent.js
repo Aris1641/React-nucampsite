@@ -4,20 +4,28 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
 
-const required = val => val && val.length;
+
 const maxLength = len => val => !val || (val.length <= len);
 const minLength = len => val => val && (val.length >= len);
-const isNumber = val => !isNaN(+val);
+
 
 class CommentForm extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isModalOpen: false
+            isModalOpen: false,
+            inputValue: { rating: '', author: '', text: '' },
         };
         this.toggleModal = this.toggleModal.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({
+            inputValue: { [event.target.name]: event.target.value }
+        });
     }
 
     toggleModal() {
@@ -45,7 +53,9 @@ class CommentForm extends Component {
                             <div className="form-group">
                                 <Label htmlFor="rating">Rating</Label>
                                 <Control.select model=".rating" id="rating" name="rating"
-                                    className="form-control">
+                                    className="form-control"
+                                    value={this.state.inputValue.rating}
+                                    onChange={this.handleChange}>
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -58,8 +68,9 @@ class CommentForm extends Component {
                                 <Control.text model=".author" id="author" name="author"
                                     placeholder="Your Name"
                                     className="form-control"
-                                    validators={{ required, minLength: 2, maxLength: 15 }}
-                                />
+                                    validators={{ minLength: minLength(2), maxLength: maxLength(15) }}
+                                    value={this.state.inputValue.author}
+                                    onChange={this.handleChange} />
                                 <Errors className="text-danger"
                                     model=".author"
                                     show="touched"
@@ -75,9 +86,11 @@ class CommentForm extends Component {
                                 <Control.textarea model=".text" id="text" name="text"
                                     rows="6"
                                     className="form-control"
+                                    value={this.state.inputValue.text}
+                                    onChange={this.handleChange}
                                 />
                             </div>
-                            <Button type="submit" color="primary">
+                            <Button onClick={this.handleSubmit} type="submit" color="primary">
                                 Submit
                             </Button>
                         </LocalForm>
