@@ -9,6 +9,7 @@ import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addComment, fetchCampsites } from '../redux/ActionCreators';
+import { actions } from 'react-redux-form';
 
 const mapStateToProps = state => {
     return {
@@ -21,12 +22,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
     addComment: (campsiteId, rating, author, text) => (addComment(campsiteId, rating, author, text)),
-    fetchCampsites: () => (fetchCampsites())
+    fetchCampsites: () => (fetchCampsites()),
+    resetFeddbackForm: () => (actions.reset('feedbackForm'))
 };
 
 class Main extends Component {
 
-    compoentDidMount() {
+    componentDidMount() {
         this.props.fetchCampsites();
     }
 
@@ -37,7 +39,7 @@ class Main extends Component {
                 <Home
                     campsite={this.props.campsites.filter(campsite => campsite.featured)[0]}
                     campsitesLoading={this.props.campsites.isLoading}
-                    caopsitesErrMess={this.props.campsites.errMess}
+                    campsitesErrMess={this.props.campsites.errMess}
                     promotion={this.props.promotions.filter(promotion => promotion.featured)[0]}
                     partner={this.props.partners.filter(partner => partner.featured)[0]}
                 />
@@ -61,7 +63,7 @@ class Main extends Component {
                     <Route path='/home' component={HomePage} />
                     <Route exact path='/directory' render={() => <Directory campsites={this.props.campsites} />} />
                     <Route path='/directory/:campsiteId' component={CampsiteWithId} />
-                    <Route exact path='/contactus' component={Contact} />
+                    <Route exact path='/contactus' redner={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
                     <Route exact path='/aboutus' render={() => <About partners={this.props.partners} />} />
                     <Redirect to='/home' />
                 </Switch>
