@@ -1,6 +1,7 @@
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
 
+
 export const postComment = (campsiteId, rating, author, text) => dispatch => {
     const newComment = {
         campsiteId: campsiteId,
@@ -28,7 +29,7 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
         },
             error => { throw error; }
         )
-        .then(response => response.JSON())
+        .then(response => response.json())
         .then(response => dispatch(addComment(response)))
         .catch(error => {
             console.log('post comment', error.message);
@@ -36,7 +37,19 @@ export const postComment = (campsiteId, rating, author, text) => dispatch => {
         });
 };
 
+export const postFeedback = ({ feedback }) => dispatch => {
 
+    return fetch(baseUrl + 'feedback')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                return (
+                    alert("Thank you for your feedback",)
+                );
+            }
+        })
+}
 
 export const fetchCampsites = () => dispatch => {
     dispatch(campsitesLoading());
@@ -78,7 +91,7 @@ export const fetchPromotions = () => dispatch => {
                 throw errMess;
             }
         )
-        .then(response => response.JSON())
+        .then(response => response.json())
         .then(promotions => dispatch(addPromotions(promotions)))
         .catch(error => dispatch(promotionsFailed(error.message)));
 };
@@ -103,6 +116,42 @@ export const fetchComments = () => dispatch => {
         .then(comments => dispatch(addComments(comments)))
         .catch(error => dispatch(commentsFailed(error.message)));
 }
+
+export const fetchPartners = () => dispatch => {
+    dispatch(partnersLoading());
+    return fetch(baseUrl + 'partners')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                const errMess = new Error(error.message);
+                throw errMess;
+            }
+        )
+        .then(response => response.json())
+        .then(partners => dispatch(addPartners(partners)))
+        .catch(error => dispatch(partnersFailed(error.message)));
+}
+
+export const addPartners = partners => ({
+    type: ActionTypes.ADD_PARTNERS,
+    payload: partners
+});
+
+export const partnersFailed = partners => ({
+    type: ActionTypes.PARTNERS_FAILED,
+    payload: partners
+})
+
+export const partnersLoading = () => ({
+    type: ActionTypes.PARTNERS_LOADING
+})
 
 export const commentsFailed = errMess => ({
     type: ActionTypes.COMMENTS_FAILED,

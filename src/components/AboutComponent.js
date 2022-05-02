@@ -1,12 +1,15 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { Fade, Stagger } from 'react-animation-components';
 
-function RenderPartner({partner}) {
+function RenderPartner({ partner }) {
     if (partner) {
         return (
             <React.Fragment>
-                <Media object src={partner.image} alt={partner.name} width="150" />
+                <Media object src={baseUrl + partner.image} alt={partner.name} width="150" />
                 <Media body className="ml-5 mb-4">
                     <Media heading>{partner.name}</Media>
                     {partner.description}
@@ -17,7 +20,7 @@ function RenderPartner({partner}) {
     return <div />;
 }
 
-function About(props) {
+function PartnerList(props, isLoading, errMess) {
 
     const partners = props.partners.map(partner => {
         return (
@@ -25,7 +28,28 @@ function About(props) {
                 <RenderPartner partner={partner} />
             </Media>
         );
+
     });
+    if (isLoading) {
+        return <Loading />;
+    }
+    if (errMess) {
+        return (
+            <div className="col">
+                <h4>{errMess}</h4>
+            </div>);
+    }
+    return (
+        <div className="col mt-4">
+
+            <Media list>
+                {partners}
+            </Media>
+        </div>
+    )
+}
+
+function About(props) {
 
     return (
         <div className="container">
@@ -68,7 +92,7 @@ function About(props) {
                                 <p className="mb-0">I will not follow where the path may lead, but I will go where there is no path, and I will leave a trail.</p>
                                 <footer className="blockquote-footer">Muriel Strode,{' '}
                                     <cite title="Source Title">"Wind-Wafted Wild Flowers" -
-                                    The Open Court, 1903</cite>
+                                        The Open Court, 1903</cite>
                                 </footer>
                             </blockquote>
                         </CardBody>
@@ -79,11 +103,7 @@ function About(props) {
                 <div className="col-12">
                     <h3>Community Partners</h3>
                 </div>
-                <div className="col mt-4">
-                    <Media list>
-                        {partners}
-                    </Media>
-                </div>
+                <PartnerList partners={props.partners} />
             </div>
         </div>
     );
